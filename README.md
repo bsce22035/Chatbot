@@ -17,3 +17,7 @@ The chatbot supports:
 - Persistent chat history even after refreshing.
 - AI responses using Groq API.
 - Message formatting for better readability.
+---
+Create a .env file in backend/:
+
+GROQ_API_KEY=your_groq_api_key_here
