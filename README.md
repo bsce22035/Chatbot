@@ -10,8 +10,6 @@ The chatbot supports:
 - Persistent storage of chat history using `localStorage`.
 - Clean UI with sidebar for previous chats and "New Chat" button.
 
-Create a .env file in backend/:
-GROQ_API_KEY=your_groq_api_key_here
 ---
 
 ## Features
@@ -19,3 +17,5 @@ GROQ_API_KEY=your_groq_api_key_here
 - AI responses using Groq API.
 - Message formatting for better readability.
 
+Create a .env file in backend/:
+GROQ_API_KEY=your_groq_api_key_here
