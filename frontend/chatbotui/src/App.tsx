@@ -29,12 +29,12 @@ const App = () => {
     }
   }, []);
 
-  /* Save to localStorage whenever conversations update */
+  /* Save conversations to localStorage whenever they update */
   useEffect(() => {
     localStorage.setItem("conversations", JSON.stringify(conversations));
   }, [conversations]);
 
-  /* Auto-scroll to bottom when new message arrives */
+  /* Auto-scroll to bottom */
   useEffect(() => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
@@ -61,9 +61,7 @@ const App = () => {
 
   /* Update a conversation in state */
   const updateConversation = (conv: Conversation) => {
-    setConversations((prev) =>
-      prev.map((c) => (c.id === conv.id ? conv : c))
-    );
+    setConversations((prev) => prev.map((c) => (c.id === conv.id ? conv : c)));
     setActiveConversation(conv);
   };
 
@@ -129,18 +127,53 @@ const App = () => {
           + New Chat
         </button>
         <div className="conversation-list">
-          {conversations.map((c) => (
-            <div
-              key={c.id}
-              className={`conversation-item ${
-                activeConversation?.id === c.id ? "active" : ""
-              }`}
+        {conversations.map((c) => (
+          <div
+            key={c.id}
+            className={`conversation-item ${activeConversation?.id === c.id ? "active" : ""}`}
+          >
+            <span
               onClick={() => setActiveConversation(c)}
+              className="conversation-title"
             >
               {c.title}
-            </div>
-          ))}
-        </div>
+            </span>
+
+            {/* Edit Button */}
+            <button
+              className="edit-btn"
+              onClick={(e) => {
+                e.stopPropagation();
+                const newTitle = prompt("Enter new title:", c.title);
+                if (newTitle && newTitle.trim() !== "") {
+                  setConversations((prev) =>
+                    prev.map((conv) =>
+                      conv.id === c.id ? { ...conv, title: newTitle.trim() } : conv
+                    )
+                  );
+                }
+              }}
+            >
+              ✎
+            </button>
+
+            {/* Delete Button */}
+            <button
+              className="delete-btn"
+              onClick={(e) => {
+                e.stopPropagation();
+                if (window.confirm("Delete this chat?")) {
+                  setConversations((prev) => prev.filter((conv) => conv.id !== c.id));
+                  if (activeConversation?.id === c.id) setActiveConversation(null);
+                }
+              }}
+            >
+              🗑
+            </button>
+          </div>
+        ))}
+      </div>
+
       </div>
 
       {/* Chat Window */}
@@ -163,22 +196,21 @@ const App = () => {
 
         {activeConversation && (
           <form onSubmit={sendMessage} className="chat-input">
-  <input
-    type="text"
-    value={message}
-    onChange={(e) => setMessage(e.target.value)}
-    placeholder="Type your message..."
-    className="chat-input-box"
-  />
-  <button
-    type="submit"
-    disabled={loading || !message.trim()}
-    className="send-btn"
-  >
-    ➤
-  </button>
-</form>
-
+            <input
+              type="text"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Type your message..."
+              className="chat-input-box"
+            />
+            <button
+              type="submit"
+              disabled={loading || !message.trim()}
+              className="send-btn"
+            >
+              ➤
+            </button>
+          </form>
         )}
       </div>
     </div>

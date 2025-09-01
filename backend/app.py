@@ -62,6 +62,23 @@ def get_or_create_conversation(conversation_id: str) -> Conversation:
         conversations[conversation_id] = Conversation()
     return conversations[conversation_id]
 
+@app.get("/conversations")
+async def list_conversations():
+    return {"conversations": list(conversations.keys())}
+
+@app.get("/conversations/{conversation_id}")
+async def get_conversation(conversation_id: str):
+    if conversation_id not in conversations:
+        raise HTTPException(status_code=404, detail="Conversation not found")
+    return {"messages": conversations[conversation_id].messages}
+
+@app.post("/conversations/new")
+async def new_conversation():
+    new_id = str(len(conversations) + 1)  # simple ID
+    conversations[new_id] = Conversation()
+    return {"conversation_id": new_id}
+
+
 @app.post("/chat")
 async def chat(input: UserInput):
     conversation = get_or_create_conversation(input.conversation_id)
