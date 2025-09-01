@@ -11,7 +11,6 @@ The chatbot supports:
 - Clean UI with sidebar for previous chats and "New Chat" button.
 
 Create a .env file in backend/:
-
 GROQ_API_KEY=your_groq_api_key_here
 ---
 
