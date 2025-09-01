@@ -163,16 +163,22 @@ const App = () => {
 
         {activeConversation && (
           <form onSubmit={sendMessage} className="chat-input">
-            <input
-              type="text"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="Type your message..."
-            />
-            <button type="submit" disabled={loading || !message.trim()}>
-              Send
-            </button>
-          </form>
+  <input
+    type="text"
+    value={message}
+    onChange={(e) => setMessage(e.target.value)}
+    placeholder="Type your message..."
+    className="chat-input-box"
+  />
+  <button
+    type="submit"
+    disabled={loading || !message.trim()}
+    className="send-btn"
+  >
+    ➤
+  </button>
+</form>
+
         )}
       </div>
     </div>
